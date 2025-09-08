@@ -40,10 +40,10 @@ export default function StreamingInterface() {
   }, [hash]);
 
 
-  // Get user balance
+  // Get user balance - dynamic based on connected network
   const { data: balance } = useBalance({
     address,
-    chainId: 14601, // Sonic Testnet
+    chainId, // Uses the connected network's chainId
   });
 
   // Get total streams (nextStreamId)
