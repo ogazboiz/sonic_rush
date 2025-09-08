@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "forge-std/Script.sol";
+import "../src/SonicRush.sol";
+
+contract DeploySonicRush is Script {
+    function setUp() public {}
+
+    function run() public {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey);
+
+        // Deploy SonicRush with initial parameters
+        string memory vaultName = "SonicRush Vault";
+        uint256 initialRewardRate = 5; // 5 basis points per hour
+        uint256 baseAPY = 1000; // 10% base APY
+        
+        SonicRush sonicRush = new SonicRush(vaultName, initialRewardRate, baseAPY);
+
+        console.log("=== SonicRush Deployment ===");
+        console.log("Contract deployed to:", address(sonicRush));
+        console.log("Vault Name:", vaultName);
+        console.log("Initial Reward Rate:", initialRewardRate, "basis points per hour");
+        console.log("Base APY:", baseAPY, "basis points (10%)");
+        console.log("Streaming Fee:", sonicRush.STREAMING_FEE_BPS(), "basis points (0.1%)");
+        console.log("Staker Share:", sonicRush.STAKER_SHARE_BPS(), "basis points (70%)");
+        console.log("Owner Share:", sonicRush.OWNER_SHARE_BPS(), "basis points (30%)");
+        console.log("Owner:", sonicRush.owner());
+        console.log("Deployment successful!");
+
+        vm.stopBroadcast();
+    }
+}

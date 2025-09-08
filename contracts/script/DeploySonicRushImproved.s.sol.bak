@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "forge-std/Script.sol";
+import "../src/SonicRushImproved.sol";
+
+contract DeploySonicRushImproved is Script {
+    function setUp() public {}
+
+    function run() public {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey);
+
+        // Deploy SonicRushImproved with initial parameters
+        string memory vaultName = "SonicRush Improved Vault";
+        uint256 initialRewardRate = 1; // 1 basis point per hour (more conservative)
+        uint256 baseAPY = 1000; // 10% base APY
+        address charityAddress = 0x742d35Cc6634C0532925A3b8D0c0E1C4c5c5c5c5; // Example charity address
+        
+        SonicRushImproved sonicRush = new SonicRushImproved(
+            vaultName, 
+            initialRewardRate, 
+            baseAPY, 
+            charityAddress
+        );
+
+        console.log("=== SonicRush Improved Deployment ===");
+        console.log("Contract deployed to:", address(sonicRush));
+        console.log("Vault Name:", vaultName);
+        console.log("Initial Reward Rate:", initialRewardRate, "basis points per hour (0.01% per hour)");
+        console.log("Base APY:", baseAPY, "basis points (10%)");
+        console.log("Streaming Fee:", sonicRush.STREAMING_FEE_BPS(), "basis points (0.1%)");
+        console.log("Staker Share:", sonicRush.STAKER_SHARE_BPS(), "basis points (70%)");
+        console.log("Owner Share:", sonicRush.OWNER_SHARE_BPS(), "basis points (30%)");
+        console.log("APY Cap: 10000 basis points (100%)");
+        console.log("Owner:", sonicRush.owner());
+        console.log("Charity Address:", sonicRush.charityAddress());
+        console.log("Vault Active:", sonicRush.vaultActive());
+        console.log("");
+        console.log("=== KEY IMPROVEMENTS ===");
+        console.log("- 100% APY cap for sustainability");
+        console.log("- Excess fund distribution: 50% owner, 30% charity, 20% stakers");
+        console.log("- Separate charity address from owner");
+        console.log("- No value destruction - all funds used productively");
+        console.log("");
+        console.log("Deployment successful!");
+
+        vm.stopBroadcast();
+    }
+}
