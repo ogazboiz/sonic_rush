@@ -91,15 +91,25 @@ function distributeExcessFunds() external onlyOwner
 
 ---
 
-## 📊 Deployed Contract
+## 📊 Deployed Contracts
 
-**SonicRush Activity-Based Contract (LATEST - Fixed):**
+### 🌐 **Sonic Mainnet (Production)** ⭐
+- **Contract Address**: `0x60bEc5652AeC0b367bf83f84054DC99bB0Bcf15e`
+- **Network**: Sonic Mainnet (Chain ID: 146)
+- **RPC URL**: https://rpc.soniclabs.com
+- **Explorer**: [View on Sonic Explorer](https://sonicscan.org/address/0x60bEc5652AeC0b367bf83f84054DC99bB0Bcf15e)
+- **Owner**: `0x2E15bB8aDF3438F66A6F786679B0bBBBF02A75d5`
+- **Charity**: `0x3210607AC8126770E850957cE7373ee7e59e3A29`
+- **Status**: ✅ **LIVE ON MAINNET** - Ready for production use
+
+### 🧪 **Sonic Testnet (Development)**
 - **Contract Address**: `0x29BA007f6e604BF884968Ce11cB2D8e3b81A6284`
 - **Network**: Sonic Testnet (Chain ID: 14601)
-- **Explorer**: [View on Sonic Explorer](https://testnet.sonicscan.org/address/0x29BA007f6e604BF884968Ce11cB2D8e3b81A6284)
+- **RPC URL**: https://rpc.testnet.soniclabs.com
+- **Explorer**: [View on Sonic Testnet](https://testnet.sonicscan.org/address/0x29BA007f6e604BF884968Ce11cB2D8e3b81A6284)
 - **Owner**: `0xd2df53D9791e98Db221842Dd085F4144014BBE2a`
 - **Charity**: `0x2E15bB8aDF3438F66A6F786679B0bBBBF02A75d5`
-- **Status**: ✅ Fixed compilation errors, ready for verification
+- **Status**: ✅ Available for testing and development
 
 ### Contract Parameters
 - **Vault Name**: "SonicRush"

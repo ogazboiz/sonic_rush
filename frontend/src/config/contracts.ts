@@ -1,15 +1,22 @@
-// Contract addresses based on environment
-const isMainnet = process.env.NEXT_PUBLIC_ENVIRONMENT === 'mainnet'
+// Contract addresses based on chain ID - automatic network detection!
+export const getContractAddresses = (chainId?: number) => {
+  // If no chainId provided, we cannot determine network
+  if (!chainId) {
+    throw new Error('Chain ID is required to determine contract address. Please connect your wallet.');
+  }
 
-export const getContractAddresses = () => {
-  if (isMainnet) {
-    return {
-      SONIC_RUSH: '0x0000000000000000000000000000000000000000', // Mainnet address when deployed
-    }
-  } else {
-    return {
-      SONIC_RUSH: '0x29BA007f6e604BF884968Ce11cB2D8e3b81A6284', // Latest SonicRushActivityBased contract
-    }
+  // Chain-specific contract selection
+  switch (chainId) {
+    case 14601: // Sonic Testnet
+      return {
+        SONIC_RUSH: '0x29BA007f6e604BF884968Ce11cB2D8e3b81A6284', // Correct testnet contract
+      }
+    case 146: // Sonic Mainnet
+      return {
+        SONIC_RUSH: '0x60bEc5652AeC0b367bf83f84054DC99bB0Bcf15e', // LIVE mainnet contract
+      }
+    default:
+      throw new Error(`Unsupported chain ID: ${chainId}. Please connect to Sonic Mainnet (146) or Testnet (14601).`);
   }
 }
 

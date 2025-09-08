@@ -27,16 +27,38 @@ const sonicTestnet: AppKitNetwork = {
   testnet: true,
 };
 
-// Environment detection - default to testnet for now
-const isMainnet = process.env.NEXT_PUBLIC_ENVIRONMENT === 'mainnet';
+const sonicMainnet: AppKitNetwork = {
+  id: 146,
+  name: 'Sonic',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Sonic',
+    symbol: 'S',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.soniclabs.com'],
+    },
+    public: {
+      http: ['https://rpc.soniclabs.com'],
+    },
+  },
+  blockExplorers: {
+    default: { name: 'Sonic Scan', url: 'https://sonicscan.org' },
+  },
+  testnet: false,
+};
 
-// Network configurations for TimeFlowVault
-const testnetNetworks: [AppKitNetwork, ...AppKitNetwork[]] = [
+// No environment dependency - users choose network in wallet
+
+// Network configurations for TimeFlowVault - Now supporting both!
+const allNetworks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  sonicMainnet,
   sonicTestnet,
 ];
 
-// Use appropriate networks based on environment (currently only testnet available)
-const supportedNetworks = testnetNetworks;
+// Use all networks - users can choose between mainnet and testnet
+const supportedNetworks = allNetworks;
 
 // 1. Get projectId at https://cloud.reown.com
 const projectId = "8387f0bbb57a265cd4dd96c3e658ac55";
@@ -49,21 +71,13 @@ const metadata = {
   icons: ["https://timeflowvault.com/logo.png"],
 };
 
-// Get primary network info for logging
-const primaryNetwork = supportedNetworks[0];
-const networkType = isMainnet ? 'Mainnet' : 'Testnet';
-
-// Log environment info for debugging
-console.log(`⚡ TimeFlowVault Environment: ${primaryNetwork.name} ${networkType}`);
+// Log supported networks info
+console.log(`⚡ TimeFlowVault Networks Available:`);
 console.log(`📡 Supported Networks:`, supportedNetworks.map(n => `${n.name} (${n.id})`));
-console.log(`🚀 Primary Network: ${primaryNetwork.name} - Chain ID ${primaryNetwork.id}`);
-
-if (primaryNetwork.id === 14601) {
-  console.log(`✅ Sonic Testnet ready for TimeFlowVault!`);
-  console.log(`🔗 Explorer: https://testnet.sonicscan.org`);
-  console.log(`💧 RPC: https://rpc.testnet.soniclabs.com`);
-  console.log(`💰 Faucet: https://testnet.soniclabs.com/account`);
-}
+console.log(`🌐 Sonic Mainnet: Chain 146 - Contract: 0x60bEc5652AeC0b367bf83f84054DC99bB0Bcf15e`);
+console.log(`🧪 Sonic Testnet: Chain 14601 - Contract: 0x29BA007f6e604BF884968Ce11cB2D8e3b81A6284`);
+console.log(`🔄 Contract selection: Automatic based on connected network`);
+console.log(`✅ Users can switch networks in wallet to use different contracts`);
 
 // 3. Create the AppKit instance
 createAppKit({
@@ -76,8 +90,8 @@ createAppKit({
     email: true,
     socials: ['google', 'x', 'github'],
   },
-  // Testnet specific configurations  
-  defaultNetwork: sonicTestnet,
+  // Default to mainnet (users can switch in wallet)
+  defaultNetwork: sonicMainnet,
 });
 
 interface AppKitProps {
@@ -90,8 +104,7 @@ export function AppKit({ children }: AppKitProps) {
 
 // Export network info for use in other components
 export const NETWORK_INFO = {
-  isMainnet,
-  primaryNetwork,
   supportedNetworks,
   sonicTestnet,
+  sonicMainnet,
 };

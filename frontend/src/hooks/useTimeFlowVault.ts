@@ -1,14 +1,11 @@
 'use client'
 
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi'
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount, useChainId } from 'wagmi'
 import { parseEther, formatEther } from 'viem'
 import { getContractAddresses, SONIC_RUSH_ABI } from '@/config/contracts'
 import { useRefresh } from '@/context/refresh'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-
-// Get contract configuration
-const contracts = getContractAddresses()
 
 // Stream data types
 export interface Stream {
@@ -33,6 +30,8 @@ export interface Stake {
 // Custom hook for TimeFlow Vault following Agro's pattern
 export function useTimeFlowVault() {
   const { address } = useAccount()
+  const chainId = useChainId()
+  const contracts = getContractAddresses(chainId)
   const { refreshTrigger, triggerDelayedRefresh } = useRefresh()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -260,6 +259,8 @@ export function useTimeFlowVault() {
 
 // Individual hook for stream data (for performance)
 export function useStream(streamId: number) {
+  const chainId = useChainId()
+  const contracts = getContractAddresses(chainId)
   const { refreshTrigger } = useRefresh()
 
   const { data: stream, refetch: refetchStream } = useReadContract({

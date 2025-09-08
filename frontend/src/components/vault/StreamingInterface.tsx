@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Zap, Clock, ArrowRight, Users, Play, Square, Download } from 'lucide-react';
-import { useAccount, useBalance, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useAccount, useBalance, useReadContract, useWriteContract, useWaitForTransactionReceipt, useChainId } from 'wagmi';
 import { getContractAddresses, SONIC_RUSH_ABI } from '@/config/contracts';
 import { formatEther } from 'viem';
 import toast from 'react-hot-toast';
@@ -24,7 +24,8 @@ export default function StreamingInterface() {
   const [currentToastId, setCurrentToastId] = useState<string | null>(null);
   const { address, isConnected } = useAccount();
   const { writeContract, data: hash, isPending } = useWriteContract();
-  const contracts = getContractAddresses();
+  const chainId = useChainId();
+  const contracts = getContractAddresses(chainId);
 
   // Wait for transaction confirmation
   const { isLoading: isConfirming, isSuccess: isConfirmed, isError: isTxError } = useWaitForTransactionReceipt({

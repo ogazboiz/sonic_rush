@@ -10,13 +10,26 @@ import StakingInterface from './vault/StakingInterface';
 import StreamingInterface from './vault/StreamingInterface';
 import AdminInterface from './vault/AdminInterface';
 import { Zap, Coins, TrendingUp, Users } from 'lucide-react';
-import { useReadContract } from 'wagmi';
+import { useReadContract, useChainId } from 'wagmi';
 import { getContractAddresses, SONIC_RUSH_ABI } from '@/config/contracts';
 import { formatEther } from 'viem';
 
 export default function SonicRushDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
-  const contracts = getContractAddresses();
+  const chainId = useChainId();
+  const contracts = getContractAddresses(chainId);
+  
+  // Get network name based on chainId
+  const getNetworkName = (chainId: number) => {
+    switch (chainId) {
+      case 146:
+        return 'Sonic Mainnet';
+      case 14601:
+        return 'Sonic Testnet';
+      default:
+        return 'Unknown Network';
+    }
+  };
 
   // Get vault stats for dashboard 
   const { data: vaultStats } = useReadContract({
@@ -71,7 +84,7 @@ export default function SonicRushDashboard() {
           </p>
           <div className="flex items-center justify-center gap-2 mt-4">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm text-gray-500">Connected to Sonic Testnet</span>
+            <span className="text-sm text-gray-500">Connected to {getNetworkName(chainId)}</span>
           </div>
         </motion.div>
 

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Settings, DollarSign, Pause, AlertTriangle, Gift, Download } from 'lucide-react';
-import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { useAccount, useReadContract, useWriteContract, useChainId } from 'wagmi';
 import { getContractAddresses, SONIC_RUSH_ABI } from '@/config/contracts';
 import { formatEther } from 'viem';
 import toast from 'react-hot-toast';
@@ -19,7 +19,8 @@ export default function AdminInterface() {
   const [vaultName, setVaultName] = useState('');
   const { address, isConnected } = useAccount();
   const { writeContract } = useWriteContract();
-  const contracts = getContractAddresses();
+  const chainId = useChainId();
+  const contracts = getContractAddresses(chainId);
 
   // Check if user is owner
   const { data: owner } = useReadContract({

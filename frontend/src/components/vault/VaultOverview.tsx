@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
-import { useReadContract, useAccount } from 'wagmi';
+import { useReadContract, useAccount, useChainId } from 'wagmi';
 import { getContractAddresses, SONIC_RUSH_ABI } from '@/config/contracts';
 import { formatEther } from 'viem';
 import { TrendingUp, Gift } from 'lucide-react';
@@ -14,7 +14,8 @@ import { Stream, VaultStats } from '@/types/contract';
 export default function VaultOverview() {
   const { isConnected } = useAccount();
   const [recentStreams, setRecentStreams] = useState<Stream[]>([]);
-  const contracts = getContractAddresses();
+  const chainId = useChainId();
+  const contracts = getContractAddresses(chainId);
 
 
   // Get vault stats  

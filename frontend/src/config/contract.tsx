@@ -1,35 +1,24 @@
 import { TIMEFLOW_VAULT_ABI } from './timeflow-abi';
 
-// SonicRushActivityBased Contract Addresses  
+// SonicRushActivityBased Contract Addresses - UPDATED!
 export const CONTRACT_ADDRESSES = {
-  // Sonic Testnet - NEW Activity-Based Contract
-  SONIC_TESTNET: '0xF8eF427B959322D568246ffa5cCa16DB06b07a25',
+  // Sonic Testnet - Latest deployed contract
+  SONIC_TESTNET: '0x0f764437ffBE1fcd0d0d276a164610422710B482',
   
-  // Sonic Mainnet (add when deployed)
-  SONIC_MAINNET: process.env.NEXT_PUBLIC_SONIC_MAINNET_CONTRACT_ADDRESS || '0x0000000000000000000000000000000000000000',
+  // Sonic Mainnet - LIVE!
+  SONIC_MAINNET: '0x60bEc5652AeC0b367bf83f84054DC99bB0Bcf15e',
 } as const;
 
-// Get contract address based on environment and chain ID
-export const getContractAddress = (chainId?: number): string => {
-  const isMainnet = process.env.NEXT_PUBLIC_ENVIRONMENT === 'mainnet';
-  
-  // If chainId is provided, use chain-specific logic
-  if (chainId) {
-    switch (chainId) {
-      case 14601: // Sonic Testnet
-        return CONTRACT_ADDRESSES.SONIC_TESTNET;
-      case 146: // Sonic Mainnet (when available)
-        return CONTRACT_ADDRESSES.SONIC_MAINNET;
-      default:
-        throw new Error(`Unsupported chain ID: ${chainId}`);
-    }
-  }
-  
-  // Environment-based selection
-  if (isMainnet) {
-    return CONTRACT_ADDRESSES.SONIC_MAINNET;
-  } else {
-    return CONTRACT_ADDRESSES.SONIC_TESTNET;
+// Get contract address based ONLY on chain ID - no environment variables!
+export const getContractAddress = (chainId: number): string => {
+  // Chain-specific contract selection - automatic based on connected network
+  switch (chainId) {
+    case 14601: // Sonic Testnet
+      return CONTRACT_ADDRESSES.SONIC_TESTNET;
+    case 146: // Sonic Mainnet
+      return CONTRACT_ADDRESSES.SONIC_MAINNET;
+    default:
+      throw new Error(`Unsupported chain ID: ${chainId}. Please connect to Sonic Mainnet (146) or Testnet (14601).`);
   }
 };
 
