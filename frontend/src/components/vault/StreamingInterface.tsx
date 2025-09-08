@@ -267,14 +267,13 @@ export default function StreamingInterface() {
       return;
     }
 
-    if (!isStreamSender(streamDetails) && !isStreamRecipient(streamDetails)) {
-      toast.error('You can only cancel streams where you are the sender or recipient.');
+    if (!isStreamSender(streamDetails)) {
+      toast.error('You can only cancel streams that you created (sender only).');
       return;
     }
 
     // Show confirmation with explanation of what cancel does
-    const userRole = isStreamSender(streamDetails) ? 'creator' : 'recipient';
-    const confirmMessage = `Cancel Stream as ${userRole}?\n\nThis will:\n• Stop the stream immediately\n• Send claimable funds to recipient\n• Refund remaining funds to creator\n• Make stream inactive (no more withdraws possible)\n\nContinue?`;
+    const confirmMessage = `Cancel Stream as creator?\n\nThis will:\n• Stop the stream immediately\n• Send claimable funds to recipient\n• Refund remaining funds to you\n• Make stream inactive (no more withdraws possible)\n\nContinue?`;
     
     if (!confirm(confirmMessage)) {
       return;

@@ -352,37 +352,61 @@ export default function StakingInterface() {
         transition={{ delay: 0.1 }}
         className="grid grid-cols-1 lg:grid-cols-3 gap-6"
       >
-        {/* Stake */}
-        <Card className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-blue-600">💰 Stake Tokens</CardTitle>
-            <CardDescription>
-              Stake S tokens to earn your share of all platform fees (up to 40% APY)
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Amount to Stake</label>
-              <Input
-                type="number"
-                placeholder="0.0"
-                value={stakeAmount}
-                onChange={(e) => setStakeAmount(e.target.value)}
-                className="mb-2"
-              />
-              <p className="text-xs text-gray-500">
-                Available: {balance ? formatEther(balance.value) : '0'} S
-              </p>
-            </div>
-            <Button 
-              onClick={handleStake}
-              className="w-full bg-blue-600 hover:bg-blue-700"
-              disabled={!stakeAmount || Number(stakeAmount) <= 0 || isPending || isConfirming}
-            >
-              {isPending ? 'Submitting...' : isConfirming && pendingTxType === 'stake' ? 'Confirming...' : 'Stake Tokens'}
-            </Button>
-          </CardContent>
-        </Card>
+        {/* Stake - Only show if user doesn't have active stake */}
+        {!isStaking && (
+          <Card className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-0 shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-blue-600">💰 Stake Tokens</CardTitle>
+              <CardDescription>
+                Stake S tokens to earn your share of all platform fees (up to 40% APY)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Amount to Stake</label>
+                <Input
+                  type="number"
+                  placeholder="0.0"
+                  value={stakeAmount}
+                  onChange={(e) => setStakeAmount(e.target.value)}
+                  className="mb-2"
+                />
+                <p className="text-xs text-gray-500">
+                  Available: {balance ? formatEther(balance.value) : '0'} S
+                </p>
+              </div>
+              <Button 
+                onClick={handleStake}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                disabled={!stakeAmount || Number(stakeAmount) <= 0 || isPending || isConfirming}
+              >
+                {isPending ? 'Submitting...' : isConfirming && pendingTxType === 'stake' ? 'Confirming...' : 'Stake Tokens'}
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Information card when user already has stake */}
+        {isStaking && (
+          <Card className="bg-blue-50/70 dark:bg-blue-900/30 backdrop-blur-sm border-blue-200 shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-blue-600">💡 Already Staking</CardTitle>
+              <CardDescription>
+                You currently have an active stake. To stake a different amount, unstake first.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="bg-blue-100 dark:bg-blue-800 p-4 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <strong>Current Stake:</strong> {formatEther(stakedAmount)} S
+                </p>
+                <p className="text-xs text-blue-600 dark:text-blue-300 mt-2">
+                  The contract only allows one active stake per address. Use the Unstake section to withdraw your tokens, then you can stake again.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Unstake */}
         <Card className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-0 shadow-lg">
