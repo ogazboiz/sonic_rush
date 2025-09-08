@@ -759,7 +759,7 @@ export default function StreamingInterface() {
               <p>• Can withdraw multiple times as funds become available</p>
             </div>
             <div>
-              <p className="font-semibold text-yellow-800 dark:text-yellow-200">CANCEL (Creator or Recipient):</p>
+              <p className="font-semibold text-yellow-800 dark:text-yellow-200">CANCEL (Creator):</p>
               <p>• Immediately stops the entire stream</p>
               <p>• Automatically sends all claimable funds to recipient</p>
               <p>• Refunds remaining funds to creator</p>
